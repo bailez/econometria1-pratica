@@ -1,0 +1,132 @@
+---
+title: "Unpolluted Decisions: Air Quality and Judicial Outcomes in China"
+subtitle: "Trabalho de Econometria"
+author: "Miguel Sallum e Felipe Bailez"
+institute: "FEA-USP"
+date: "13/11/2020"
+output: 
+  beamer_presentation:
+    theme: "Madrid"
+    colortheme: "default"
+    fonttheme: "structurebold"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("haven")
+library(tidyverse)
+library(gridExtra)
+library(car)
+dados<-read_dta("master_public.dta")
+
+```
+
+## Contexto
+
+Usaremos a base de dados do paper "Unpolluted Decisions", de Hou e Wang(2020).\newline
+o paper se faz parte de um conjunto recente de papers sobre "fatores externos" afetando as decisões de juízes.\newline
+Tem como pares papers que indicam que juizes americanos são afetados pelo clima [Heyes and Saberian 2019], pela alimentação [Danziger, Levav and Avnaim-Pesso 2011] e até por resultados esportivos [Eren and Mocan 2018].
+
+## Dados Trabalhados
+
+O paper trás dados sobre o sistema penal Chinês -- em casos de narcóticos, que são de mais fácil comparação -- e busca ver o efeito de poluição na decisão de juízes.\newline
+Como a legislação chinesa tem regras para quantidades diferentes que não permitiriam uma única linha de regressão adequada, decidimos restringir nossa amostra para somente os casos de menos de 10 gramas.Trabalharemos então com aproximadamente 8000 observações, abrindo mão de 2000. 
+```{r data, echo=FALSE}
+minor=filter(dados, dados$drug_quant< 10)
+pun_quant<-lm(pun_fix~drug_quant, minor)
+```
+
+## Variáveis
+\scriptsize
+```{r variables, echo = TRUE}
+names(minor)
+nrow(dados)
+nrow(minor)
+```
+
+## Regressão linear simples
+\[pun\_fix=\beta_0+\beta_1drug\_quant+u\]
+\tiny
+```{r table ,echo= FALSE}
+summary(pun_quant)
+```
+
+## Regressão linear simples(Gráfico)
+```{r residual,fig.width=15,fig.height=8 ,echo= FALSE}
+ggplot(minor, aes(drug_quant,pun_fix))+geom_point(alpha=1/10)+geom_smooth(method = lm)
+```
+
+## Regressão controlando por cidade
+\[pun\_fix=\beta_0 +\beta_1drug\_quant+\sum_i^4\alpha_icity_i\]
+\tiny
+```{r multi ,echo= FALSE}
+pun_qc<-lm(pun_fix~drug_quant+factor(city), minor)
+summary(pun_qc)
+```
+
+## Regressão controlando por especificidades
+\tiny
+\[pun\_fix=\beta_0+\beta_1drug\_quant+\sum_j^7\delta_jespecs_j\]
+```{r espec, echo=FALSE}
+pun_qe<-lm(pun_fix ~ drug_quant + defrecid + defgoodattitude + crimedrugmanufacture + crimedrugtraffic + crimedrugsmuggle + crimedrugtransport + crimedrugpossession, minor)
+summary(pun_qe)
+```
+
+## Regressão contolada por ambos
+\tiny
+\[pun\_fix=\beta_0+\beta_1drug\_quant+\sum_j^7\delta_jespecs_j+\sum_i^4\alpha_icity_i\]
+```{r espec and city, echo=FALSE}
+pun_qce<-lm(pun_fix ~ drug_quant + defrecid + defgoodattitude + crimedrugmanufacture + crimedrugtraffic + crimedrugsmuggle + crimedrugtransport + crimedrugpossession + factor(city), minor)
+spun_qce<-summary(pun_qce)
+spun_qce$coefficients[1:9,]
+```
+## Regressão controlada por juízes no lugar de cidades
+\tiny
+\[pun\_fix=\beta_0+\beta_1drug\_quant+\sum_j^7\delta_jespecs_j+\sum_i^4\alpha_ijudge_i\]
+```{r espec and judge, echo=FALSE}
+pun_qje<-lm(pun_fix ~ drug_quant + defrecid + defgoodattitude + crimedrugmanufacture + crimedrugtraffic + crimedrugsmuggle + crimedrugtransport + crimedrugpossession + factor(judge1_factor), minor)
+spun_qje<-summary(pun_qje)
+spun_qje$coefficients[1:9,]
+```
+
+
+## Regressão com poluição controlando por cidades
+\scriptsize
+\[pun\_fix=\beta_0+\beta_1drug\_quant+\beta_2pm\_r+\beta_3temp+\beta_4humi+\sum_i^4\alpha_icity_i+\sum_j^7\delta_jespecs_j\]
+```{r polution with cities, echo=FALSE}
+pun_qcet<-lm(pun_fix ~ drug_quant + pm_r + temp + humi + factor(city) + defrecid + defgoodattitude + crimedrugmanufacture + crimedrugtraffic + crimedrugsmuggle + crimedrugtransport + crimedrugpossession, minor)
+spun_qcet<-summary(pun_qcet)
+spun_qcet$coefficients[1:5,]
+hip1<-linearHypothesis(pun_qcet, c("pm_r=0", "temp=0", "humi=0"))
+hip1[2,5:6]
+```
+
+
+## Regressão com poluição controlando por juízes
+\scriptsize
+\[pun\_fix=\beta_0+\beta_1drug\_quant+\beta_2pm\_r+\beta_3temp+\beta_4humi+\sum_i^4\alpha_ijudge_i+\sum_j^7\delta_jespecs_j\]
+```{r polution with judges, echo=FALSE}
+pun_qjet<-lm(pun_fix ~ drug_quant + pm_r + temp + humi + factor(judge1_factor) + defrecid + defgoodattitude + crimedrugmanufacture + crimedrugtraffic + crimedrugsmuggle + crimedrugtransport + crimedrugpossession, minor)
+spun_qjet<-summary(pun_qjet)
+spun_qjet$coefficients[1:5,]
+hip2<-linearHypothesis(pun_qjet, c("pm_r=0", "temp=0", "humi=0"))
+hip2[2,5:6]
+```
+
+## Residuals
+\tiny
+```{r residuals, fig.width=15, fig.height=8,  echo=FALSE}
+
+p1<-ggplot(pun_qcet, aes(x=.fitted, y=.resid))+geom_point()+labs(title="Cidades e Clima")
+p2<-ggplot(pun_qjet, aes(x=.fitted, y=.resid))+geom_point()+labs(title="Juízes e Clima")
+p3<-ggplot(pun_qce, aes(x=.fitted, y=.resid))+geom_point()+labs(title="Cidades sem Clima")
+p4<-ggplot(pun_qje, aes(x=.fitted, y=.resid))+geom_point()+labs(title="Juízes sem Clima")
+grid.arrange(p1, p2, p3, p4, nrow=2)
+```
+
+---
+\begin{center}
+
+\LARGE
+Obrigado!
+\end{center}
