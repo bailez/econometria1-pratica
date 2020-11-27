@@ -212,14 +212,14 @@ mod1<-lm(colGPA ~ hsGPA, data = gpa1 )
 mod2 <- lm(colGPA ~ hsGPA + ACT, data = gpa1 )
 mod3 <- lm(colGPA ~ hsGPA + ACT + age ,data = gpa1 )
 
-stargazer (list(mod1,mod2,mod3),type="text",keep.stat=c("n","rsq"))                                                                                                " r sq " ) )
+stargazer(list(mod1,mod2,mod3),type="text",keep.stat=c("n","rsq"))  
 
 
 
 
 
 
-
+stargazer()
 
 
 

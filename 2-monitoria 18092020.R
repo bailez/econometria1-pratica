@@ -69,7 +69,7 @@ xbarra <- mean(X) #x m?dio
 b1_chapeu <- covxy/varx # beta1 chapeu
 b0_chapeu <- ybarra - b1_chapeu%*%xbarra # beta2 chapeu
 # Vetor de y previsto
-y_chapeu <- b0_chapeu + b1_chapeu%*%X
+y_chapeu <- b0_chapeu + b1_chapeu*X
 # Vetor de res?duos
 u_chapeu <- Y - y_chapeu
 
