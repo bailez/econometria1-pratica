@@ -4,13 +4,12 @@
 # Ct r l + A: seleciona todas as linhas do script
 # Ct r l + L: limpa o console
 #ctrl+ S: salvar
-# Esc interrompe execução
+# Esc interrompe execu??o
 
 #Instalar pacotes
 #install.packages ("nome do pacote")
 #library(nome pacote)
 
-install.packages("ggplot2")
 library(ggplot2)
 
 
@@ -56,7 +55,7 @@ print(X)
 
 a <- c(1,2,3,4,5,6)
 a
-# fazer operações elemento a elemento com o vetor
+# fazer opera??es elemento a elemento com o vetor
 b <- a+1
 View(b)
 c <- a+b
@@ -68,7 +67,7 @@ sqrt (d)
 v <- c (10, 9 , 8 , 5 , 3 , 1 , 2 , 6 , 4 , 7)
 
 View(v)
-# número de e lementos
+# n?mero de e lementos
 length(v)
 # maior valor
 max(v)
@@ -89,7 +88,7 @@ numeric (5)
 
 rep (2, 5)
 
-# criar vetor com sequência de números: seq ( t ) ou seq ( 1 : t ) , i e , 1 , 2 , . . . , t
+# criar vetor com sequ?ncia de n?meros: seq ( t ) ou seq ( 1 : t ) , i e , 1 , 2 , . . . , t
 seq (10)
 seq ( 1 : 10)
 # seq ( f , t ) : f , f+1 , f+2 , . . . , t
@@ -101,7 +100,7 @@ seq ( 3 , 30 , 2*1 )
 cidades <- c ( "Belo Horizonte" , "Governador Valadares " , " Ipatinga " )
 View(cidades)
 
-#Operadores lógicos no R
+#Operadores l?gicos no R
 
 # gerar o objeto x = 5
 x <- 5
@@ -124,17 +123,17 @@ x>y
 x <= y
 # x maior que ou igual a y
 x >= y
-# não é b ( i e , b é falso )
+# n?o ? b ( i e , b ? falso )
 ! b
-# ou a ou b é ve rdade i r o ( ou ambos )
+# ou a ou b ? ve rdade i r o ( ou ambos )
 a | b
-# a e b s ão ambos v e rdade i r o s
+# a e b s ?o ambos v e rdade i r o s
 a&b
 
-# Vetor categórico
+# Vetor categ?rico
 x <- c ( 1 , 2 , 3 , 4 , 5 )
 
-meunome <- c ( " discordo totalmente " , " discordo " , "não concordo nem discordo
+meunome <- c ( " discordo totalmente " , " discordo " , "n?o concordo nem discordo
 " , " concordo " , " concordo totalmente " )
 
 # Nomear os elementos do vetor x
@@ -143,7 +142,7 @@ x
 View(x)
 
 
-# pelo número do elemento
+# pelo n?mero do elemento
 cidades <- c ( "Belo Horizonte " , "Governador Valadares " , " Ipatinga " )
 cidades [ 1 ]
 cidades [ 2 ]
@@ -179,7 +178,7 @@ View(vetor)
 ( A <- matrix ( vetor,nrow=2) )
 
 
-# gerar e salvar matriz a partir de vetores que correspondem às linhas
+# gerar e salvar matriz a partir de vetores que correspondem ?s linhas
 
 linha1 <- c ( 2 , 3 , 4 )
 linha2 <- c ( 4 , 5 , 6 )
@@ -188,7 +187,7 @@ B <- rbind(linha1, econometria, linha2 )
 B
 
 
-# gera r e salvar matriz a partir de vetores que correspondem às colunas
+# gera r e salvar matriz a partir de vetores que correspondem ?s colunas
 coluna1 <- c ( 1 , 2 )
 coluna2 <- c ( 3 , 4 )
 coluna3 <- c ( 5 , 6 )
@@ -219,7 +218,7 @@ C[ , c ( 1 , 3 ) ]
 
 
 
-# obte r uma única variável
+# obte r uma ?nica vari?vel
 View(dadosvendas)
 dadosvendas [ ,"produto2"]
 
@@ -236,7 +235,7 @@ dadosvendas$produto1
 dadosvendas$totalv2<- with (dadosvendas,produto1 + produto2 + produto3 )
 dadosvendas
 
-# obter um subconjunto dos dados (critério lógico vale para linhas )
+# obter um subconjunto dos dados (crit?rio l?gico vale para linhas )
 subset( dadosvendas , produto2>=3)
 
 
@@ -254,7 +253,7 @@ A*B
 # transposta
 C <- t (B)
 C
-# multiplicação matricial
+# multiplica??o matricial
 D <- A %*% C
 D
 # inversa

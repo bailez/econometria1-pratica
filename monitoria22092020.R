@@ -1,14 +1,14 @@
 #Monitoria 3 de R
 #Extraindo base de dados
 
-load ( "C:/Users/Guilherme/Downloads/gpa1.RData")
+load ( "gpa1.RData")
 gpa1 <- data
 View(gpa1)
 
 
 # colGPA = beta0 + \beta1hsGPA + \beta2ACT + u
 
-#Regressão
+#Regress?o
 
 lm ( colGPA ~ hsGPA + ACT, data=gpa1 )
 regressao <- lm ( colGPA ~ hsGPA + ACT, data=gpa1 )
@@ -16,7 +16,7 @@ regressao <- lm ( colGPA ~ hsGPA + ACT, data=gpa1 )
 summary(regressao)
 
 #-------------------------------------------------
-#Regressão com um parâmetro a mais. O R2 aumentou? E o R2 ajustado?
+#Regress?o com um par?metro a mais. O R2 aumentou? E o R2 ajustado?
 
 lm ( colGPA ~ hsGPA + ACT + age + alcohol, data=gpa1 )
 regressao_ex <- lm ( colGPA ~ hsGPA + ACT +age + alcohol, data=gpa1 )
@@ -30,11 +30,11 @@ summary(regressao_ex)
 #Tamanho da amostra
 n <-nrow(gpa1)
 print(n)
-# variáveis explicativas
+# vari?veis explicativas
 k <- 2
 # Vetor y
 y <- gpa1$colGPA
-# Matriz  de variáveis explicativas
+# Matriz  de vari?veis explicativas
 X <- cbind ( 1 , gpa1$hsGPA, gpa1$ACT)
 #Linhas iniciais de X
 head (X)
@@ -46,23 +46,23 @@ bchapeu<- coef(regressao)
 print(bchapeu)
 uchapeu<- resid(regressao)
 print(uchapeu)
-sum(uchapeu)  #eu que fiz, deve ser próximo de zero
+sum(uchapeu)  #eu que fiz, deve ser pr?ximo de zero
 
-# Variância estimada do residuo
+# Vari?ncia estimada do residuo
 
 sigma2<-var(uchapeu)
 View(sigma2)
 print(sigma2)
 
 
-# Variância estimada dos betas
+# Vari?ncia estimada dos betas
 Variancia_beta <- var(bchapeu)
 print(Variancia_beta)
 ep_beta <- sqrt(var(bchapeu))
 print(ep_beta)
 
 
-# EP resíduo
+# EP res?duo
 EPR <- sqrt(sigma2)
 print(ep_beta)
 print(EPR)
@@ -70,22 +70,22 @@ print(EPR)
 
 
 
-#Problema de especificação
+#Problema de especifica??o
 
 #Suponha o seguinte modelo: ychapeu = beta_chapeu0 + betachapeu1x1 + betachapeu2x2, (leia tudo em chapeu)
 #Omita x2 ytilda =betatilda0 + betatilda1x1 (leia beta tilda)
 #seja betatilda1= betachapeu1+ betachapeu2*deltatilda1
 # x2tilda= deltatilda0+ deltatilda1*x1
-#Ora, então, temos que:
+#Ora, ent?o, temos que:
 
-# Obter beta chapéu na regressão completa
+# Obter beta chap?u na regress?o completa
 bchapeu_2 <- coef((lm(colGPA~ ACT + hsGPA, data = gpa1)))
 print(bchapeu_2)
 # Estimar beta1tilda
 lm ( colGPA ~ ACT, data = gpa1)
 #Estimar deltatilda
 delta.tilda <- coef(lm(hsGPA ~ ACT, data = gpa1))
-# Então, temos
+# Ent?o, temos
 betatilda1<- bchapeu["ACT"] + bchapeu["hsGPA"] * delta.tilda[ "ACT" ]
 
 print(betatilda1)
@@ -122,22 +122,22 @@ print(bchapeu)
 
 #Segunda parte da monitoria
 
-# instalar os pacotes necessários
+# instalar os pacotes necess?rios
 install.packages("car")
 install.packages ("stargazer")
 # chamar os pacotes
 library (car)
 library(stargazer)
 
-# pacote car serve para estatíticas de teste (estatística F, estatística T, ec...)
+# pacote car serve para estat?ticas de teste (estat?stica F, estat?stica T, ec...)
 
 
-#Definir valores críticos ( parte padrão de qualquer rotina, ou quase isso...)
+#Definir valores cr?ticos ( parte padr?o de qualquer rotina, ou quase isso...)
 # alpha
 alpha <-c(0.05,0.01 )
 # t bicaudal com 137 graus de liberdade
 qt (1-alpha/2 , 137)
-# aproximação normal
+# aproxima??o normal
 qnorm(1-alpha/2)
 # t unicaudal
 qt (1-alpha, 137)
@@ -145,7 +145,7 @@ qt (1-alpha, 137)
 qf (1-alpha ,3, 137)
 
 
-#vamos trabalhar com o modelo com 3 variáveis explicativas
+#vamos trabalhar com o modelo com 3 vari?veis explicativas
 
 
 tabela <- summary (lm(colGPA ~ hsGPA + ACT + age , data=gpa1))
@@ -163,7 +163,7 @@ ep <-dados [ , 2 ]
 print(ep)
 
 
-# Estatística t
+# Estat?stica t
 (tcalc <- bchapeu/ep)
 # pvalor
 pvalor<- 2*pt(-abs(tcalc),137)
@@ -172,7 +172,7 @@ pvalor
 
 
 
-#intervalo de confiança
+#intervalo de confian?a
 
 # 95%
 regressao_ex 

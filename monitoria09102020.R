@@ -1,5 +1,5 @@
 library(haven)
-dados<- read_dta(file= "C:/Users/Guilherme/Downloads/BWGHT.dta")
+dados<- read_dta(file= "BWGHT.dta")
 
 #sempre lembrar de trocar os /
 #quando eu copio, aparece assim:
@@ -7,18 +7,18 @@ dados<- read_dta(file= "C:/Users/Guilherme/Downloads/BWGHT.dta")
 
 View(dados)
 
-#primeiro passo. Sumarizar dados descritivos sobre variáveis. Quais variáveis ?
-#Aquelas que nao são dummy e são explicativas do modelo.
+#primeiro passo. Sumarizar dados descritivos sobre vari?veis. Quais vari?veis ?
+#Aquelas que nao s?o dummy e s?o explicativas do modelo.
 
-#Separando variáveis
+#Separando vari?veis
 
 faminc<- dados$faminc
 print(dados$faminc)
-#como extrair informações iniciais de estatística descritiva da variável faminc?
+#como extrair informa??es iniciais de estat?stica descritiva da vari?vel faminc?
 summary(faminc)
-#histograma da variável faminc
+#histograma da vari?vel faminc
 hist(faminc)
-#Explicar possíveis pontos fora da curva com base no paper
+#Explicar poss?veis pontos fora da curva com base no paper
 cigprice<- dados$cigprice
 summary(cigprice)
 X<-summary(cigprice)
@@ -31,16 +31,16 @@ View(dados)
 length(dados)
 
 library(ggplot2)
-#vamos gerar um gráfico de pontos
+#vamos gerar um gr?fico de pontos
 qplot(x = faminc, y = cigprice, data = dados, geom = "point")
 
 
 install.packages("ggplot2")
 library(ggplot2)
 
-#atributos estéticos
-#color=: altera a cor de formas que não têm área (pontos e retas).
-#fill=: altera a cor de formas com área (barras, caixas, densidades, áreas).
+#atributos est?ticos
+#color=: altera a cor de formas que n?o t?m ?rea (pontos e retas).
+#fill=: altera a cor de formas com ?rea (barras, caixas, densidades, ?reas).
 #size=: altera o tamanho de formas.
 #type=: altera o tipo da forma, geralmente usada para pontos.
 #linetype=: altera o tipo da linha.
@@ -54,19 +54,19 @@ geom_abline(intercept = 110, slope = 1, color = "black")
 ggplot(dados) + 
   geom_histogram(aes(x = cigtax), color = "black", fill = "white")
 
-#Ver mais informações sobre como plotar gráficos em 
+#Ver mais informa??es sobre como plotar gr?ficos em 
 # https://www.curso-r.com/material/ggplot/
 
 
 
-#Regressão
+#Regress?o
 
 lm ( cigprice ~ faminc + cigtax, data=dados )
 regressao <- lm(cigprice ~ faminc + cigtax, data=dados)
 # Resultados 
 summary(regressao)
 #dicas 
-#analisar significancia e relação economica
+#analisar significancia e rela??o economica
 
 
 lm ( cigprice ~ faminc + cigtax+ bwght+ fatheduc, data=dados )
@@ -86,16 +86,16 @@ print(bchapeu)
 
 uchapeu<- resid(regressao)
 
-# Variância estimada do residuo
+# Vari?ncia estimada do residuo
 
 sigma2<-var(uchapeu)
 
-# Variância estimada dos betas
+# Vari?ncia estimada dos betas
 summary(regressao)
 
 
 
-#como fazer gráficos (olhar na barra de graficos)
+#como fazer gr?ficos (olhar na barra de graficos)
 
 
 
@@ -122,7 +122,7 @@ beta_reg2<- coef(lm( formula=cigprice ~ u_regressao_1, data=dados))
 print(beta_reg2)
 print(bchapeu)
 
-# agora compara esse beta 1 com o beta 1 da regressão 2: tem que ser iguais!
+# agora compara esse beta 1 com o beta 1 da regress?o 2: tem que ser iguais!
 
 #Obs: a constante entra em todas as regressoes!
 
@@ -131,12 +131,12 @@ print(bchapeu)
 
 #___________________
 #voltando
-#Definir valores críticos ( parte padrão de qualquer rotina, ou quase isso...)
+#Definir valores cr?ticos ( parte padr?o de qualquer rotina, ou quase isso...)
 # alpha
-alpha <-c(0.05,0.01 )
+alpha <-c(0.05,0.01)
 # t bicaudal com 137 graus de liberdade
 qt (1-alpha/2 , 1384)
-# aproximação normal
+# aproxima??o normal
 qnorm(1-alpha/2)
 # t unicaudal
 qt (1-alpha, 1384)
@@ -144,7 +144,7 @@ qt (1-alpha, 1384)
 qf (1-alpha ,3, 1384)
 
 
-#vamos trabalhar com o modelo com 3 variáveis explicativas
+#vamos trabalhar com o modelo com 3 vari?veis explicativas
 
 
 tabela <- summary (lm(cigprice ~ faminc + cigtax+ bwght+ fatheduc, data=dados ))
@@ -164,7 +164,7 @@ print(ep)
 exemplo<-dados_coef[1,2]
 print(exemplo)
 
-# Estatística t
+# Estat?stica t
 (tcalc <- bchapeu/ep)
 # pvalor
 pvalor<- 2*pt(-abs(tcalc),1384)
@@ -173,7 +173,7 @@ pvalor
 
 
 
-#intervalo de confiança
+#intervalo de confian?a
 
 # 95%
 regressao2
